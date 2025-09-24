@@ -1,5 +1,6 @@
 import 'package:evently_sun_online/core/resources/assets_manager.dart';
 import 'package:evently_sun_online/core/resources/colors_manager.dart';
+import 'package:evently_sun_online/core/routes_manager/app_routes.dart';
 import 'package:evently_sun_online/core/widgets/custom_elevated_button.dart';
 import 'package:evently_sun_online/core/widgets/custom_text_form_field.dart';
 import 'package:evently_sun_online/features/auth/login/login.dart';
@@ -78,7 +79,9 @@ class _RegisterState extends State<Register> {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, AppRoutes.login);
+                        },
                         child: Text(
                           "Login",
                           style: GoogleFonts.inter(
