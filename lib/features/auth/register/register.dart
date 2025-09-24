@@ -1,9 +1,9 @@
 import 'package:evently_sun_online/core/resources/assets_manager.dart';
 import 'package:evently_sun_online/core/resources/colors_manager.dart';
 import 'package:evently_sun_online/core/routes_manager/app_routes.dart';
+import 'package:evently_sun_online/core/utils/validator_utils.dart';
 import 'package:evently_sun_online/core/widgets/custom_elevated_button.dart';
 import 'package:evently_sun_online/core/widgets/custom_text_form_field.dart';
-import 'package:evently_sun_online/features/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +18,34 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool securePassword = true;
   bool secureRePassword = true;
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+
+  late TextEditingController _passwordController;
+
+  late TextEditingController _rePasswordController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _nameController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _rePasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _rePasswordController.dispose();
+    super.dispose();
+  }
+
+  var _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,74 +57,111 @@ class _RegisterState extends State<Register> {
             Image.asset(ImageAssets.eventlyLogo),
 
             Padding(
-              padding:  EdgeInsets.only(left: 16, right: 16, bottom: MediaQuery.of(context).viewInsets.bottom) ,
+              padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
 
-        child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: 24.h),
-                  CustomTextFormField(
-                    labelText: "Name",
-                    prefixIcon: Icons.person,
-                    keyboardType: TextInputType.name,
-                  ),
-                  SizedBox(height: 16.h),
-                  CustomTextFormField(
-                    labelText: "E-mail",
-                    prefixIcon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: 16.h),
-                  CustomTextFormField(
-                    isSecure: securePassword,
-                    labelText: "Password",
-                    prefixIcon: Icons.lock,
-                    suffixIcon: IconButton(
-                      onPressed:_onTogglePasswordIconClicked,
-                      icon: Icon(securePassword ? Icons.visibility_off: Icons.visibility),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 24.h),
+                    CustomTextFormField(
+                      controller: _nameController,
+                      validator: ValidatorUtils.validateName,
+                      labelText: "Name",
+                      prefixIcon: Icons.person,
+                      keyboardType: TextInputType.name,
                     ),
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  SizedBox(height: 16.h),
-                  CustomTextFormField(
-                    isSecure: secureRePassword,
-                    labelText: "Re-Password",
-                    prefixIcon: Icons.lock,
-                    suffixIcon: IconButton(
-                      onPressed: _onToggleRePasswordIconClicked,
-                      icon: Icon(secureRePassword ? Icons.visibility_off: Icons.visibility),
+                    SizedBox(height: 16.h),
+                    CustomTextFormField(
+                      controller: _emailController,
+                      validator: ValidatorUtils.validateEmail,
+                      labelText: "E-mail",
+                      prefixIcon: Icons.email,
+                      keyboardType: TextInputType.emailAddress,
                     ),
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  SizedBox(height: 16.h),
-                  CustomElevatedButton(text: "Create Account", onPress: () {}),
-                  SizedBox(height: 16.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Already Have Account ? ",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacementNamed(context, AppRoutes.login);
-                        },
-                        child: Text(
-                          "Login",
-                          style: GoogleFonts.inter(
-                            fontSize: 16.sp,
-                            color: ColorsManager.blue,
-                            fontWeight: FontWeight.bold,
-                            decorationColor: ColorsManager.blue,
-                            decoration: TextDecoration.underline,
-                            fontStyle: FontStyle.italic
-                          ),
+                    SizedBox(height: 16.h),
+                    CustomTextFormField(
+                      controller: _passwordController,
+                      validator: ValidatorUtils.validatePassword,
+                      isSecure: securePassword,
+                      labelText: "Password",
+                      prefixIcon: Icons.lock,
+                      suffixIcon: IconButton(
+                        onPressed: _onTogglePasswordIconClicked,
+                        icon: Icon(
+                          securePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+                    SizedBox(height: 16.h),
+                    CustomTextFormField(
+                      controller: _rePasswordController,
+                      validator: (input) {
+                        if (input == null || input.trim().isEmpty) {
+                          return "Required re-password";
+                        }
+                        if (input != _passwordController.text) {
+                          return "Password doesn't match";
+                        }
+                        return null;
+                      },
+                      isSecure: secureRePassword,
+                      labelText: "Re-Password",
+                      prefixIcon: Icons.lock,
+                      suffixIcon: IconButton(
+                        onPressed: _onToggleRePasswordIconClicked,
+                        icon: Icon(
+                          secureRePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+                    SizedBox(height: 16.h),
+                    CustomElevatedButton(
+                      text: "Create Account",
+                      onPress: _createAccount,
+                    ),
+                    SizedBox(height: 16.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Already Have Account ? ",
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRoutes.login,
+                            );
+                          },
+                          child: Text(
+                            "Login",
+                            style: GoogleFonts.inter(
+                              fontSize: 16.sp,
+                              color: ColorsManager.blue,
+                              fontWeight: FontWeight.bold,
+                              decorationColor: ColorsManager.blue,
+                              decoration: TextDecoration.underline,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -105,15 +170,21 @@ class _RegisterState extends State<Register> {
     );
   }
 
-
-  void _onTogglePasswordIconClicked(){
+  void _onTogglePasswordIconClicked() {
     setState(() {
       securePassword = !securePassword;
     });
   }
-  void _onToggleRePasswordIconClicked(){
+
+  void _onToggleRePasswordIconClicked() {
     setState(() {
       secureRePassword = !secureRePassword;
     });
+  }
+
+  void _createAccount() {
+    if (_formKey.currentState?.validate() == false) return;
+
+    // logic
   }
 }
