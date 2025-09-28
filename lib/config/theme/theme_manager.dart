@@ -71,6 +71,21 @@ class ThemeManager{
       )
     ),
     textTheme: TextTheme(
+      titleSmall: GoogleFonts.inter(
+        fontSize: 14.sp,
+        color: ColorsManager.white,
+        fontWeight: FontWeight.w400,
+      ),
+      titleLarge:GoogleFonts.inter(
+        fontSize: 24.sp,
+        color: ColorsManager.white,
+        fontWeight: FontWeight.bold,
+      ),
+      labelSmall: GoogleFonts.inter(
+        fontSize: 14.sp,
+        color: ColorsManager.blue,
+        fontWeight: FontWeight.bold,
+      ),
       bodySmall: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500, color: ColorsManager.black)
     )
   );
