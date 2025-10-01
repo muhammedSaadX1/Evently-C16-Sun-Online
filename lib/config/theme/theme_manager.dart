@@ -87,6 +87,10 @@ class ThemeManager{
         fontWeight: FontWeight.bold,
       ),
       bodySmall: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500, color: ColorsManager.black)
+
+    ,headlineMedium: GoogleFonts.inter(fontSize: 20.sp, fontWeight: FontWeight.bold, color: ColorsManager.black),
+    labelMedium: GoogleFonts.inter(fontSize: 20.sp, fontWeight: FontWeight.bold, color: ColorsManager.blue),
+
     )
   );
   static final ThemeData dark = ThemeData();
