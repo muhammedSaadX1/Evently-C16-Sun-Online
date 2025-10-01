@@ -1,4 +1,5 @@
 import 'package:evently_sun_online/core/resources/colors_manager.dart';
+import 'package:evently_sun_online/core/routes_manager/app_routes.dart';
 import 'package:evently_sun_online/features/main_layout/favourite_tab/favourite_tab.dart';
 import 'package:evently_sun_online/features/main_layout/home_tab/home_tab.dart';
 import 'package:evently_sun_online/features/main_layout/map_tab/map_tab.dart';
@@ -30,7 +31,9 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   Widget _buildFab() {
-    return FloatingActionButton(onPressed: () {}, child: Icon(Icons.add));
+    return FloatingActionButton(onPressed: () {
+      Navigator.pushNamed(context, AppRoutes.createEvent);
+    }, child: Icon(Icons.add));
   }
 
   BottomAppBar _buildBottomAppBar() {

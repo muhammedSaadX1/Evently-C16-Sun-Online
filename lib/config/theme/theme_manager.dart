@@ -54,6 +54,11 @@ class ThemeManager{
         fontWeight: FontWeight.w500,
         color: ColorsManager.grey,
       ),
+      hintStyle: GoogleFonts.inter(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w500,
+        color: ColorsManager.grey,
+      ),
 
       prefixIconColor: ColorsManager.grey,
       suffixIconColor: ColorsManager.grey,
@@ -76,6 +81,11 @@ class ThemeManager{
         color: ColorsManager.white,
         fontWeight: FontWeight.w400,
       ),
+      titleMedium:GoogleFonts.inter(
+        fontSize: 16.sp,
+        color: ColorsManager.black,
+        fontWeight: FontWeight.w500,
+      ) ,
       titleLarge:GoogleFonts.inter(
         fontSize: 24.sp,
         color: ColorsManager.white,

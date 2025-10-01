@@ -31,6 +31,7 @@ class _HomeTabState extends State<HomeTab> {
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(16.r)),
           ),
           child: SafeArea(
+            bottom: false,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
